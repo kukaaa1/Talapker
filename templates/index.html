@@ -1,0 +1,278 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>АУНиГ - Talapker AI</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body class="bg-slate-50 font-sans text-slate-800 relative overflow-x-hidden min-h-screen flex flex-col">
+
+    <div class="fixed top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-blue-500/20 rounded-full blur-[120px] pointer-events-none z-[0]"></div>
+    <div class="fixed bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-indigo-500/10 rounded-full blur-[120px] pointer-events-none z-[0]"></div>
+    <div id="floating-background" class="fixed inset-0 z-[1] overflow-hidden pointer-events-none"></div>
+
+    <nav class="bg-blue-900 text-white p-4 shadow-xl sticky top-0 z-40 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-blue-800 to-transparent opacity-50"></div>
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center relative z-10 gap-4 md:gap-0">
+            <a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); setTimeout(() => location.reload(), 400); return false;" class="flex items-center gap-4 cursor-pointer hover:opacity-90 transition-opacity group">
+                <div class="bg-white p-2 rounded-xl shadow-md flex items-center justify-center w-14 h-14 border border-blue-200 group-hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-robot text-blue-800 text-3xl"></i>
+                </div>
+                <div class="flex flex-col">
+                    <h1 class="text-2xl md:text-3xl font-black tracking-widest leading-none text-white drop-shadow-md">TALAPKER</h1>
+                    <span class="text-[10px] md:text-xs uppercase tracking-widest text-blue-200 font-semibold mt-1">АУНиГ им. С. Утебаева</span>
+                </div>
+            </a>
+            <div class="flex items-center gap-8 text-sm font-bold tracking-wide">
+                <a href="#about-section" class="text-blue-100 hover:text-white hover:underline transition-all uppercase tracking-wider">Об университете</a>
+                <a href="#footer-contacts" class="text-blue-100 hover:text-white hover:underline transition-all uppercase tracking-wider">Контакты</a>
+            </div>
+        </div>
+    </nav>
+
+    <main onmouseleave="resetPanels()" class="relative z-10 max-w-7xl mx-auto p-4 lg:p-8 flex flex-col lg:flex-row gap-6 mt-2 h-[850px] lg:h-[700px] items-stretch flex-1 w-full">
+        
+        <div id="panel-calc" onmouseenter="setActivePanel('calc')" class="panel-transition w-full lg:w-1/2 bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white overflow-hidden relative group cursor-pointer" style="will-change: width;">
+            
+            <div class="flex flex-row w-full min-w-[900px] h-full p-6 lg:p-10 gap-10 items-center shrink-0">
+                
+                <div class="w-[400px] shrink-0 flex flex-col justify-center h-full">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-3xl font-black text-blue-900 tracking-tight">Калькулятор</h2>
+                        <button type="button" onclick="openCareerTest(event)" class="text-xs bg-white border border-blue-100 text-blue-800 hover:bg-blue-50 px-3 py-2 rounded-full font-bold shadow-sm z-50 transition-all">
+                            <i class="fa-solid fa-compass text-blue-500 mr-1"></i> Кто я?
+                        </button>
+                    </div>
+                    
+                    <form id="calculatorForm" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-2">Профильные предметы</label>
+                            <select class="w-full p-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none bg-white shadow-sm font-medium">
+                                <option>Математика - Физика</option>
+                                <option>Математика - Информатика</option>
+                            </select>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-500 mb-1 uppercase">История РК</label>
+                                <input type="number" id="hist" placeholder="0-20" class="w-full p-3 border border-slate-200 rounded-xl outline-none font-bold text-lg">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-500 mb-1 uppercase">Мат. грамотность</label>
+                                <input type="number" id="math_lit" placeholder="0-15" class="w-full p-3 border border-slate-200 rounded-xl outline-none font-bold text-lg">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-500 mb-1 uppercase">Грамотность чтения</label>
+                                <input type="number" id="read" placeholder="0-15" class="w-full p-3 border border-slate-200 rounded-xl outline-none font-bold text-lg">
+                            </div>
+                            <div></div> 
+                            <div>
+                                <label class="block text-[10px] font-black text-blue-800 mb-1 uppercase">Проф 1</label>
+                                <input type="number" id="prof1" placeholder="0-45" class="w-full p-3 border-2 border-blue-200 rounded-xl outline-none bg-blue-50 font-bold text-lg text-blue-900">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-blue-800 mb-1 uppercase">Проф 2</label>
+                                <input type="number" id="prof2" placeholder="0-45" class="w-full p-3 border-2 border-blue-200 rounded-xl outline-none bg-blue-50 font-bold text-lg text-blue-900">
+                            </div>
+                        </div>
+                        <button type="button" onclick="calculateResults(event)" class="w-full bg-blue-700 hover:bg-blue-800 text-white font-black py-4 rounded-xl transition-all shadow-lg mt-2 relative z-50">
+                            Рассчитать шансы
+                        </button>
+                    </form>
+                </div>
+
+                <div class="flex-1 h-[90%] bg-slate-50/50 rounded-3xl p-8 border border-slate-200 flex flex-col justify-center relative overflow-hidden shadow-inner">
+                    
+                    <div id="resultsPlaceholder" class="text-center text-slate-400">
+                        <i class="fa-solid fa-chart-pie text-6xl mb-4 opacity-50"></i>
+                        <p class="text-lg font-bold">Введите баллы и нажмите "Рассчитать",<br>чтобы увидеть шансы на грант</p>
+                    </div>
+
+                    <div id="inlineResults" class="hidden flex-col h-full justify-center w-full animate-fade-in">
+                        <h3 class="text-4xl font-black text-blue-900 mb-2">Балл: <span id="total-score-display" class="text-blue-600">0</span></h3>
+                        <p class="text-slate-500 font-medium mb-6">Анализ шансов на поступление:</p>
+                        
+                        <div class="space-y-6">
+                            <div class="bg-white p-5 rounded-2xl border border-blue-100 shadow-sm">
+                                <h4 class="font-bold text-slate-800 mb-2">B071 - Нефтегазовое дело</h4>
+                                <div class="flex justify-between text-sm mb-1 font-bold"><span>Вероятность:</span> <span class="text-green-600" id="chance-1">0%</span></div>
+                                <div class="w-full bg-slate-100 rounded-full h-3"><div id="bar-1" class="bg-green-500 h-full rounded-full transition-all duration-1000" style="width: 0%"></div></div>
+                            </div>
+                            
+                            <div class="bg-white p-5 rounded-2xl border border-blue-100 shadow-sm">
+                                <h4 class="font-bold text-slate-800 mb-2">B057 - IT технологии</h4>
+                                <div class="flex justify-between text-sm mb-1 font-bold"><span>Вероятность:</span> <span class="text-blue-600" id="chance-2">0%</span></div>
+                                <div class="w-full bg-slate-100 rounded-full h-3"><div id="bar-2" class="bg-blue-500 h-full rounded-full transition-all duration-1000" style="width: 0%"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div id="overlay-calc" class="absolute inset-0 bg-white/40 backdrop-blur-[2px] transition-all duration-300 opacity-0 pointer-events-none flex items-center justify-center z-40">
+                <span class="transform -rotate-90 text-2xl font-black text-blue-900 whitespace-nowrap tracking-widest bg-white/95 px-6 py-2 rounded-full shadow-lg">КАЛЬКУЛЯТОР</span>
+            </div>
+        </div>
+
+        <div id="panel-chat" onmouseenter="setActivePanel('chat')" class="panel-transition w-full lg:w-1/2 bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl flex flex-col border border-white overflow-hidden relative group cursor-pointer" style="will-change: width;">
+            
+            <div class="w-full min-w-[500px] h-full flex flex-col relative z-10 shrink-0">
+                <div class="bg-blue-900 text-white p-5 flex items-center gap-4">
+                    <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center font-black text-blue-900 shadow-inner text-xl">AI</div>
+                    <div>
+                        <h3 class="font-bold text-lg tracking-wide">AUNIG AI-Консультант</h3>
+                        <p class="text-sm text-blue-300 font-medium">Задай свой вопрос</p>
+                    </div>
+                </div>
+                <div id="chat-box" class="flex-1 p-6 overflow-y-auto chat-scroll flex flex-col gap-6">
+                    <div class="flex gap-3">
+                        <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full flex-shrink-0 flex items-center justify-center text-white text-xs font-bold mt-1 shadow-md">AI</div>
+                        <div class="bg-white p-4 rounded-2xl rounded-tl-none border border-slate-100 shadow-md text-slate-700 text-sm font-medium leading-relaxed max-w-[80%]">
+                            Сәлем! Я знаю всё про АУНиГ. Спроси меня про документы, факультеты или жизнь на кампусе.
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4 bg-white border-t border-slate-100 flex gap-3 z-50">
+                    <input type="text" id="chat-input" placeholder="Напиши вопрос..." class="flex-1 p-3 bg-slate-100 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 text-sm" onkeypress="handleKeyPress(event)">
+                    <button type="button" onclick="sendMessage(event)" class="bg-blue-600 hover:bg-blue-700 text-white font-bold p-3 rounded-xl shadow-md w-12 flex justify-center items-center">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div id="overlay-chat" class="absolute inset-0 bg-white/40 backdrop-blur-[2px] transition-all duration-300 opacity-0 pointer-events-none flex items-center justify-center z-40">
+                <span class="transform rotate-90 text-2xl font-black text-blue-900 whitespace-nowrap tracking-widest bg-white/95 px-6 py-2 rounded-full shadow-lg">AI ЧАТ-БОТ</span>
+            </div>
+        </div>
+    </main>
+
+    <div class="max-w-7xl mx-auto w-full px-4 lg:px-8 mt-10 relative z-10">
+        <div class="bg-white/80 backdrop-blur-md border border-white rounded-3xl shadow-xl p-6 flex flex-col md:flex-row justify-center items-center gap-6 text-center">
+            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                <i class="fa-solid fa-hourglass-half text-blue-600 text-2xl animate-pulse"></i>
+            </div>
+            <div class="text-blue-950 font-bold text-lg md:text-xl tracking-wide flex flex-col md:flex-row items-center gap-3">
+                <span>До приема документов на грант осталось:</span>
+                <span id="countdown-timer" class="text-blue-700 font-black text-xl md:text-2xl bg-blue-50 border border-blue-100 px-4 py-2 rounded-xl shadow-inner">Загрузка...</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="w-full bg-white/90 backdrop-blur-sm py-6 overflow-hidden relative z-10 mt-10 shadow-sm border-y border-slate-200">
+        <div class="max-w-7xl mx-auto flex items-center">
+            <span class="font-black text-blue-900 mr-8 whitespace-nowrap z-10 bg-white/90 pr-6 uppercase tracking-widest text-sm shadow-[20px_0_20px_-10px_rgba(255,255,255,1)]">Партнеры АУНиГ:</span>
+            <div class="marquee-container flex-1 overflow-hidden relative">
+                <div class="marquee-content flex whitespace-nowrap items-center gap-16 text-slate-500 font-bold text-lg">
+                    <div class="flex flex-col items-center gap-2 group cursor-pointer"><div class="w-14 h-14 bg-white rounded-xl shadow-md border border-slate-100 p-2 flex items-center justify-center group-hover:scale-110 transition-transform"><img src="{% static 'logo-ncoc.png' %}" class="max-w-full max-h-full object-contain grayscale group-hover:grayscale-0 transition-all" onerror="this.outerHTML='<i class=\\\'fa-solid fa-building text-slate-300 text-3xl\\\'></i>'"></div><span class="text-xs uppercase tracking-wider text-slate-400 group-hover:text-blue-600 transition-colors">NCOC</span></div>
+                    <div class="flex flex-col items-center gap-2 group cursor-pointer"><div class="w-14 h-14 bg-white rounded-xl shadow-md border border-slate-100 p-2 flex items-center justify-center group-hover:scale-110 transition-transform"><img src="{% static 'logo-tco.png' %}" class="max-w-full max-h-full object-contain grayscale group-hover:grayscale-0 transition-all" onerror="this.outerHTML='<i class=\\\'fa-solid fa-building text-slate-300 text-3xl\\\'></i>'"></div><span class="text-xs uppercase tracking-wider text-slate-400 group-hover:text-blue-600 transition-colors">Тенгизшевройл</span></div>
+                    <div class="flex flex-col items-center gap-2 group cursor-pointer"><div class="w-14 h-14 bg-white rounded-xl shadow-md border border-slate-100 p-2 flex items-center justify-center group-hover:scale-110 transition-transform"><img src="{% static 'logo-kmg.png' %}" class="max-w-full max-h-full object-contain grayscale group-hover:grayscale-0 transition-all" onerror="this.outerHTML='<i class=\\\'fa-solid fa-building text-slate-300 text-3xl\\\'></i>'"></div><span class="text-xs uppercase tracking-wider text-slate-400 group-hover:text-blue-600 transition-colors">КазМунайГаз</span></div>
+                    <div class="flex flex-col items-center gap-2 group cursor-pointer"><div class="w-14 h-14 bg-white rounded-xl shadow-md border border-slate-100 p-2 flex items-center justify-center group-hover:scale-110 transition-transform"><img src="{% static 'logo-emg.png' %}" class="max-w-full max-h-full object-contain grayscale group-hover:grayscale-0 transition-all" onerror="this.outerHTML='<i class=\\\'fa-solid fa-building text-slate-300 text-3xl\\\'></i>'"></div><span class="text-xs uppercase tracking-wider text-slate-400 group-hover:text-blue-600 transition-colors">Эмбамунайгаз</span></div>
+                    <div class="flex flex-col items-center gap-2 group cursor-pointer"><div class="w-14 h-14 bg-white rounded-xl shadow-md border border-slate-100 p-2 flex items-center justify-center group-hover:scale-110 transition-transform"><img src="{% static 'logo-slb.png' %}" class="max-w-full max-h-full object-contain grayscale group-hover:grayscale-0 transition-all" onerror="this.outerHTML='<i class=\\\'fa-solid fa-building text-slate-300 text-3xl\\\'></i>'"></div><span class="text-xs uppercase tracking-wider text-slate-400 group-hover:text-blue-600 transition-colors">Schlumberger</span></div>
+                    <div class="flex flex-col items-center gap-2 group cursor-pointer"><div class="w-14 h-14 bg-white rounded-xl shadow-md border border-slate-100 p-2 flex items-center justify-center group-hover:scale-110 transition-transform"><img src="{% static 'logo-ncoc.png' %}" class="max-w-full max-h-full object-contain grayscale group-hover:grayscale-0 transition-all" onerror="this.outerHTML='<i class=\\\'fa-solid fa-building text-slate-300 text-3xl\\\'></i>'"></div><span class="text-xs uppercase tracking-wider text-slate-400 group-hover:text-blue-600 transition-colors">NCOC</span></div>
+                    <div class="flex flex-col items-center gap-2 group cursor-pointer"><div class="w-14 h-14 bg-white rounded-xl shadow-md border border-slate-100 p-2 flex items-center justify-center group-hover:scale-110 transition-transform"><img src="{% static 'logo-tco.png' %}" class="max-w-full max-h-full object-contain grayscale group-hover:grayscale-0 transition-all" onerror="this.outerHTML='<i class=\\\'fa-solid fa-building text-slate-300 text-3xl\\\'></i>'"></div><span class="text-xs uppercase tracking-wider text-slate-400 group-hover:text-blue-600 transition-colors">Тенгизшевройл</span></div>
+                    <div class="flex flex-col items-center gap-2 group cursor-pointer"><div class="w-14 h-14 bg-white rounded-xl shadow-md border border-slate-100 p-2 flex items-center justify-center group-hover:scale-110 transition-transform"><img src="{% static 'logo-kmg.png' %}" class="max-w-full max-h-full object-contain grayscale group-hover:grayscale-0 transition-all" onerror="this.outerHTML='<i class=\\\'fa-solid fa-building text-slate-300 text-3xl\\\'></i>'"></div><span class="text-xs uppercase tracking-wider text-slate-400 group-hover:text-blue-600 transition-colors">КазМунайГаз</span></div>
+                    <div class="flex flex-col items-center gap-2 group cursor-pointer"><div class="w-14 h-14 bg-white rounded-xl shadow-md border border-slate-100 p-2 flex items-center justify-center group-hover:scale-110 transition-transform"><img src="{% static 'logo-emg.png' %}" class="max-w-full max-h-full object-contain grayscale group-hover:grayscale-0 transition-all" onerror="this.outerHTML='<i class=\\\'fa-solid fa-building text-slate-300 text-3xl\\\'></i>'"></div><span class="text-xs uppercase tracking-wider text-slate-400 group-hover:text-blue-600 transition-colors">Эмбамунайгаз</span></div>
+                    <div class="flex flex-col items-center gap-2 group cursor-pointer"><div class="w-14 h-14 bg-white rounded-xl shadow-md border border-slate-100 p-2 flex items-center justify-center group-hover:scale-110 transition-transform"><img src="{% static 'logo-slb.png' %}" class="max-w-full max-h-full object-contain grayscale group-hover:grayscale-0 transition-all" onerror="this.outerHTML='<i class=\\\'fa-solid fa-building text-slate-300 text-3xl\\\'></i>'"></div><span class="text-xs uppercase tracking-wider text-slate-400 group-hover:text-blue-600 transition-colors">Schlumberger</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto w-full px-4 py-10 relative z-10">
+            <h3 class="text-3xl font-black text-blue-900 text-center mb-8">Статистика АУНиГ</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white/80 backdrop-blur-md p-8 rounded-3xl shadow-lg text-center border border-white">
+                    <div class="text-5xl font-black text-blue-600 mb-3 drop-shadow-sm">1500+</div>
+                    <div class="text-slate-700 font-bold tracking-wide">Выделено грантов</div>
+                </div>
+                <div class="bg-white/80 backdrop-blur-md p-8 rounded-3xl shadow-lg text-center border border-white">
+                    <div class="text-5xl font-black text-blue-600 mb-3 drop-shadow-sm">85%</div>
+                    <div class="text-slate-700 font-bold tracking-wide">Трудоустройство в 1 год</div>
+                </div>
+                <div class="bg-white/80 backdrop-blur-md p-8 rounded-3xl shadow-lg text-center border border-white">
+                    <div class="text-5xl font-black text-blue-600 mb-3 drop-shadow-sm">100%</div>
+                    <div class="text-slate-700 font-bold tracking-wide">Места в общежитии</div>
+                </div>
+            </div>
+        </div>
+
+        <section id="about-section" class="max-w-7xl mx-auto w-full px-4 lg:px-8 py-12 relative z-10 scroll-mt-24">
+            <div class="bg-white/80 backdrop-blur-md border border-white rounded-3xl shadow-xl p-8 lg:p-12">
+                <h3 class="text-4xl font-black text-blue-900 mb-8 tracking-tight border-b-2 border-blue-100 pb-4">О нефтегазовом флагмане Казахстана</h3>
+                <div class="grid lg:grid-cols-2 gap-10">
+                    <div class="space-y-6 text-slate-700 font-medium leading-relaxed text-base">
+                        <p>Атырауский университет нефти и газа имени Сафи Утебаева (АУНиГ) — это единственный в Казахстане специализированный исследовательский вуз, который на протяжении десятилетий готовит элиту для нефтегазового, химического и IT-секторов страны.</p>
+                        <p><b class="text-blue-900">История и статус:</b> За годы своей работы университет стал настоящей кузницей кадров. Мы выпустили более 50 000 высококлассных специалистов, которые сегодня занимают руководящие должности в крупнейших национальных и международных компаниях.</p>
+                        <p><b class="text-blue-900">Передовая инфраструктура:</b> На базе университета функционируют новейшие IT-парки, лаборатории химической инженерии и симуляторы бурения (Drilling Simulators). У нас есть собственная военная кафедра с присвоением офицерских званий, современный спортивный комплекс, а также комфортабельные Дома студентов, на 100% покрывающие потребности первокурсников.</p>
+                        <p><b class="text-blue-900">Связь с производством:</b> Находясь в нефтехимической столице Казахстана — городе Атырау, мы обеспечиваем студентам прямые стажировки и трудоустройство на проектах Тенгиз, Кашаган и Карачаганак.</p>
+                    </div>
+                    <div class="relative w-full h-[100%] min-h-[350px] bg-slate-200 rounded-3xl overflow-hidden shadow-2xl border-[6px] border-white group cursor-pointer">
+                        <img src="{% static 'aunig-campus.jpg' %}" alt="Кампус АУНиГ" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onerror="this.outerHTML='<div class=\\\'w-full h-full bg-gradient-to-br from-blue-900 to-indigo-900 flex items-center justify-center\\\'></div>'">
+                        <div class="absolute inset-0 flex items-center justify-center bg-blue-900/20 group-hover:bg-blue-900/10 transition-colors">
+                            <div class="w-20 h-20 bg-white/90 backdrop-blur-md rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-play text-3xl text-blue-600 ml-2"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer id="footer-contacts" class="w-full bg-slate-900 text-slate-300 py-12 relative z-10 border-t border-slate-800 scroll-mt-24">
+            <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-start gap-8">
+                <div class="max-w-sm">
+                    <h3 class="text-2xl font-bold text-white mb-4">АУНиГ им. С. Утебаева</h3>
+                    <p class="text-sm leading-relaxed text-slate-400">Ведущий профильный университет Казахстана по подготовке специалистов нефтегазовой и IT отрасли.</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold text-white mb-4 uppercase tracking-wider">Контакты</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li><i class="fa-solid fa-location-dot w-6 text-blue-500"></i> г. Атырау, ул. М. Баймуханова, 45А</li>
+                        <li><i class="fa-solid fa-phone w-6 text-blue-500"></i> 8 (7122) 76-60-30</li>
+                        <li><i class="fa-solid fa-envelope w-6 text-blue-500"></i> kense@aogu.edu.kz</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold text-white mb-4 uppercase tracking-wider">Мы в соцсетях</h4>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-colors text-xl"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-colors text-xl"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-colors text-xl"><i class="fa-brands fa-telegram"></i></a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <div id="career-modal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[100] hidden items-center justify-center p-4">
+            <div class="bg-white w-full max-w-lg rounded-3xl shadow-2xl p-8 relative">
+                <button type="button" onclick="closeCareerTest()" class="absolute top-6 right-6 text-slate-400 hover:text-red-500 text-2xl transition-colors"><i class="fa-solid fa-xmark"></i></button>
+                <h3 class="text-3xl font-black text-blue-900 mb-2">Кем стать?</h3>
+                <p class="text-slate-500 mb-8 font-medium">Ответь на 1 вопрос, и ИИ подберет тебе факультет.</p>
+                
+                <div id="test-question">
+                    <p class="font-bold text-xl mb-6 text-slate-800">Что тебе нравится больше всего?</p>
+                    <div class="space-y-4">
+                        <button type="button" onclick="showTestResult('Нефтегазовое дело (B071)')" class="w-full text-left p-5 border-2 border-slate-100 rounded-2xl hover:bg-blue-50 hover:border-blue-400 transition-all font-bold text-slate-700 shadow-sm">1. Работать с техникой и добычей ресурсов.</button>
+                        <button type="button" onclick="showTestResult('Информационные технологии (B057)')" class="w-full text-left p-5 border-2 border-slate-100 rounded-2xl hover:bg-blue-50 hover:border-blue-400 transition-all font-bold text-slate-700 shadow-sm">2. Программировать и работать с данными.</button>
+                        <button type="button" onclick="showTestResult('Химическая инженерия (B070)')" class="w-full text-left p-5 border-2 border-slate-100 rounded-2xl hover:bg-blue-50 hover:border-blue-400 transition-all font-bold text-slate-700 shadow-sm">3. Проводить опыты в лабораториях.</button>
+                    </div>
+                </div>
+
+                <div id="test-result" class="hidden text-center py-6">
+                    <div class="text-6xl mb-6 drop-shadow-md">🎯</div>
+                    <p class="text-slate-500 font-bold mb-2 uppercase tracking-wider text-sm">Идеальная специальность:</p>
+                    <p id="result-spec" class="text-3xl font-black text-blue-700 mb-8"></p>
+                    <button type="button" onclick="closeCareerTest()" class="bg-blue-600 text-white px-8 py-4 rounded-2xl font-black hover:bg-blue-700 w-full shadow-lg transition-all">Супер, закрыть</button>
+                </div>
+            </div>
+        </div>
+
+        <script src="{% static 'scripts.js' %}"></script>
+    </body>
+</html>
