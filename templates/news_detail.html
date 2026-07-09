@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ news.title }} - АУНиГ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-50 font-sans text-slate-800 relative min-h-screen flex flex-col">
+    
+    <nav class="bg-blue-900 text-white p-4 shadow-xl sticky top-0 z-40">
+        <div class="max-w-4xl mx-auto flex items-center justify-between">
+            <a href="{% url 'home' %}" class="flex items-center gap-2 text-blue-200 hover:text-white transition-colors font-bold">
+                <i class="fa-solid fa-arrow-left"></i> Назад на главную
+            </a>
+            <h1 class="text-xl font-black tracking-widest text-white">TALAPKER</h1>
+        </div>
+    </nav>
+
+    <main class="flex-1 max-w-4xl mx-auto w-full p-4 lg:p-8 mt-6">
+        <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-100">
+            {% if news.image %}
+                <img src="{{ news.image.url }}" class="w-full h-[400px] object-cover">
+            {% endif %}
+            <div class="p-8 lg:p-12">
+                <p class="text-sm text-blue-600 font-bold mb-4 uppercase tracking-wider"><i class="fa-regular fa-calendar mr-2"></i> {{ news.created_at|date:"d E Y, H:i" }}</p>
+                <h1 class="text-3xl lg:text-5xl font-black text-slate-900 mb-8 leading-tight">{{ news.title }}</h1>
+                <div class="text-slate-700 text-lg leading-relaxed space-y-6">
+                    {{ news.content|linebreaks }}
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

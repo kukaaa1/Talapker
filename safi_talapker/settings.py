@@ -2,8 +2,9 @@
 Django settings for safi_talapker project.
 """
 
-import os # ДОБАВЛЕНО: библиотека для работы с путями к папкам
+import os
 from pathlib import Path
+import dj_database_url # ДОБАВЛЕНО: для работы базы данных на Render
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -14,7 +15,7 @@ SECRET_KEY = 'django-insecure-^3+14$r@nw%45q7#3z&ajwwscrq3kt^(+qnspgz7x212d%@5e1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*'] 
 
 # Application definition
 INSTALLED_APPS = [
@@ -34,6 +35,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', # ВАЖНО: должно быть здесь
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -47,7 +49,7 @@ ROOT_URLCONF = 'safi_talapker.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')], # ИЗМЕНЕНО: Django теперь видит твою папку templates
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -63,11 +65,12 @@ TEMPLATES = [
 WSGI_APPLICATION = 'safi_talapker.wsgi.application'
 
 # Database
+# ИЗМЕНЕНО: Настройка для Render.com (Если есть DATABASE_URL, берет PostgreSQL, иначе SQLite)
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=f'sqlite:///{BASE_DIR / "db.sqlite3"}',
+        conn_max_age=600
+    )
 }
 
 # Password validation
@@ -87,7 +90,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Internationalization
-LANGUAGE_CODE = 'ru-ru' # ИЗМЕНЕНО: Админка теперь будет на русском языке
+LANGUAGE_CODE = 'ru-ru'
 
 TIME_ZONE = 'UTC'
 
@@ -95,12 +98,13 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')] # ИЗМЕНЕНО: Django теперь видит твои CSS и JS файлы
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+# ДОБАВЛЕНО: Папка, куда Render соберет всю статику при деплое
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') 
 
-# ДОБАВЛЕНО: Настройки для загрузки картинок (например, для новостей)
+# Настройки для загрузки картинок (например, для новостей)
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
